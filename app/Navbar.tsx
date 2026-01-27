@@ -10,7 +10,7 @@ const Navbar = () => {
   ];
   const currentPath = usePathname();
   return (
-    <nav className="flex items-center justify-between p-6 bg-gray-800 text-white">
+    <nav className="flex items-center justify-between p-6">
       <Link href="/">
         <FaBug />
       </Link>
@@ -19,8 +19,8 @@ const Navbar = () => {
           <li key={link.label}>
             <Link
               className={`${
-                currentPath === link.href ? 'text-zinc-700' : 'text-zinc-200'
-              } hover:text-zinc-800 transition-colors`}
+                currentPath === link.href ? 'text-zinc-700' : 'text-zinc-500'
+              } hover:underline transition-colors`}
               href={link.href}
             >
               {link.label}
