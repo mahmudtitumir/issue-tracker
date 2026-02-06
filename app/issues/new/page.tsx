@@ -2,7 +2,7 @@
 import ErrorMessage from '@/app/components/ErrorMessage';
 import { issueCreateSchema } from '@/app/validationSchema';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Button, Callout, Text, TextField } from '@radix-ui/themes';
+import { Button, Callout, Spinner, TextField } from '@radix-ui/themes';
 import axios from 'axios';
 import 'easymde/dist/easymde.min.css';
 import { useRouter } from 'next/navigation';
@@ -16,6 +16,7 @@ type IssueForm = z.infer<typeof issueCreateSchema>;
 const NewIssuePage = () => {
   const router = useRouter();
   const [error, setError] = useState('');
+  const [submitting, setSubmitting] = useState(false);
   const {
     register,
     handleSubmit,
@@ -24,6 +25,18 @@ const NewIssuePage = () => {
   } = useForm<IssueForm>({
     resolver: zodResolver(issueCreateSchema),
   });
+  const onSubmit = handleSubmit(async data => {
+    try {
+      setSubmitting(true);
+      await axios.post('/api/issues', data);
+      router.push('/issues');
+    } catch (error) {
+      setSubmitting(false);
+      console.log(error);
+      setError('An Unexpected Error Occurred!');
+    }
+  });
+
   return (
     <div className="max-w-xl">
       {error && (
@@ -31,18 +44,7 @@ const NewIssuePage = () => {
           <Callout.Text>{error}</Callout.Text>
         </Callout.Root>
       )}
-      <form
-        className="space-y-4"
-        onSubmit={handleSubmit(async data => {
-          try {
-            await axios.post('/api/issues', data);
-            router.push('/issues');
-          } catch (error) {
-            console.log(error);
-            setError('An Unexpected Error Occurred!');
-          }
-        })}
-      >
+      <form className="space-y-4" onSubmit={onSubmit}>
         <TextField.Root placeholder="Title" {...register('title')} />
         <ErrorMessage>{errors.title?.message}</ErrorMessage>
         <Controller
@@ -53,7 +55,7 @@ const NewIssuePage = () => {
           )}
         />
         <ErrorMessage>{errors.description?.message}</ErrorMessage>
-        <Button>Submit New Issue</Button>
+        <Button>Submit New Issue {submitting && <Spinner />}</Button>
       </form>
     </div>
   );
