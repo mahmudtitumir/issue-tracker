@@ -1,68 +1,7 @@
-'use client';
-import { ErrorMessage } from '@/app/components';
-import { issueCreateSchema } from '@/app/validationSchema';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { Button, Callout, Spinner, TextField } from '@radix-ui/themes';
-import axios from 'axios';
-import 'easymde/dist/easymde.min.css';
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
-import { Controller, useForm } from 'react-hook-form';
-import dynamic from 'next/dynamic';
-import { z } from 'zod';
-
-type IssueForm = z.infer<typeof issueCreateSchema>;
-
-const SimpleMDE = dynamic(() => import('react-simplemde-editor'), {
-  ssr: false,
-});
+import IssueForm from '../_components/IssueForm';
 
 const NewIssuePage = () => {
-  const router = useRouter();
-  const [error, setError] = useState('');
-  const [submitting, setSubmitting] = useState(false);
-  const {
-    register,
-    handleSubmit,
-    control,
-    formState: { errors },
-  } = useForm<IssueForm>({
-    resolver: zodResolver(issueCreateSchema),
-  });
-  const onSubmit = handleSubmit(async data => {
-    try {
-      setSubmitting(true);
-      await axios.post('/api/issues', data);
-      router.push('/issues');
-    } catch (error) {
-      setSubmitting(false);
-      console.log(error);
-      setError('An Unexpected Error Occurred!');
-    }
-  });
-
-  return (
-    <div className="max-w-xl">
-      {error && (
-        <Callout.Root color="red" className="mb-4">
-          <Callout.Text>{error}</Callout.Text>
-        </Callout.Root>
-      )}
-      <form className="space-y-4" onSubmit={onSubmit}>
-        <TextField.Root placeholder="Title" {...register('title')} />
-        <ErrorMessage>{errors.title?.message}</ErrorMessage>
-        <Controller
-          name="description"
-          control={control}
-          render={({ field }) => (
-            <SimpleMDE placeholder="Description..." {...field} />
-          )}
-        />
-        <ErrorMessage>{errors.description?.message}</ErrorMessage>
-        <Button>Submit New Issue {submitting && <Spinner />}</Button>
-      </form>
-    </div>
-  );
+  return <IssueForm />;
 };
 
 export default NewIssuePage;
