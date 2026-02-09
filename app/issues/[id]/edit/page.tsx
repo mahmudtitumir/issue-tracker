@@ -1,6 +1,6 @@
 import prisma from '@/lib/prisma';
 import { notFound } from 'next/navigation';
-import IssueFormDate from '../../_components/IssueForm';
+import IssueForm from '../../_components/IssueForm';
 
 const IssueEditPage = async ({ params }: { params: { id: string } }) => {
   const { id } = await params;
@@ -8,7 +8,7 @@ const IssueEditPage = async ({ params }: { params: { id: string } }) => {
     where: { id: parseInt(id) },
   });
   if (!issue) notFound();
-  return <IssueFormDate issue={issue} />;
+  return <IssueForm issue={issue} />;
 };
 
 export default IssueEditPage;
