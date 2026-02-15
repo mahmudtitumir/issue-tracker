@@ -1,13 +1,13 @@
 import { IssueStatusBadge, Link } from '@/app/components';
 import prisma from '@/lib/prisma';
-import { Table } from '@radix-ui/themes';
+import { Container, Table } from '@radix-ui/themes';
 import IssueAction from './IssueAction';
 
 const issuesPage = async () => {
   const issues = await prisma.issue.findMany();
 
   return (
-    <div>
+    <Container>
       <IssueAction />
       <Table.Root variant="surface" layout="auto">
         <Table.Header>
@@ -31,7 +31,7 @@ const issuesPage = async () => {
           ))}
         </Table.Body>
       </Table.Root>
-    </div>
+    </Container>
   );
 };
 
