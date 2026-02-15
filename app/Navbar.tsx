@@ -2,12 +2,15 @@
 import { FaBug } from 'react-icons/fa';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useSession } from 'next-auth/react';
+import { Box } from '@radix-ui/themes';
 
 const Navbar = () => {
+  const { status, data } = useSession();
+  console.log(status, data);
   const navLinks = [
     { label: 'Dashboard', href: '/dashboard' },
     { label: 'Issues', href: '/issues' },
-    { label: 'Sign In', href: '/api/auth/signin' },
   ];
   const currentPath = usePathname();
   return (
@@ -29,6 +32,14 @@ const Navbar = () => {
           </li>
         ))}
       </ul>
+      <Box>
+        {status === 'authenticated' && (
+          <Link href="/api/auth/signout">Logout</Link>
+        )}
+        {status === 'unauthenticated' && (
+          <Link href="/api/auth/signin">LogIn</Link>
+        )}
+      </Box>
     </nav>
   );
 };

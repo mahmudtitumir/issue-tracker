@@ -16,7 +16,7 @@
     "@prisma/client": "^7.4.0",
     "@prisma/extension-accelerate": "^3.0.1",
     "@radix-ui/react-icons": "^1.3.2",
-    "@radix-ui/themes": "^3.2.1",
+    "@radix-ui/themes": "^3.3.0",
     "axios": "^1.13.4",
     "easymde": "^2.20.0",
     "next": "16.1.1",
