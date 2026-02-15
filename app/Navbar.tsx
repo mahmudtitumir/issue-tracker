@@ -7,6 +7,7 @@ const Navbar = () => {
   const navLinks = [
     { label: 'Dashboard', href: '/dashboard' },
     { label: 'Issues', href: '/issues' },
+    { label: 'Sign In', href: '/api/auth/signin' },
   ];
   const currentPath = usePathname();
   return (
