@@ -25,3 +25,7 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+@utility nav-link {
+  @apply text-zinc-400 hover:text-zinc-700 transition-colors;
+}

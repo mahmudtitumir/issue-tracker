@@ -2,7 +2,8 @@
 import { FaBug } from 'react-icons/fa';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useSession } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
+import classnames from 'classnames';
 import {
   Avatar,
   Box,
@@ -11,15 +12,9 @@ import {
   Flex,
   Text,
 } from '@radix-ui/themes';
+import { Skeleton } from '@/app/components';
 
 const Navbar = () => {
-  const { status, data } = useSession();
-  console.log(status, data);
-  const navLinks = [
-    { label: 'Dashboard', href: '/dashboard' },
-    { label: 'Issues', href: '/issues' },
-  ];
-  const currentPath = usePathname();
   return (
     <nav className="border-b mb-4 py-6 px-3">
       <Container>
@@ -28,50 +23,73 @@ const Navbar = () => {
             <Link href="/">
               <FaBug />
             </Link>
-            <ul className="flex space-x-4">
-              {navLinks.map(link => (
-                <li key={link.label}>
-                  <Link
-                    className={`${
-                      currentPath === link.href
-                        ? 'text-zinc-700'
-                        : 'text-zinc-500'
-                    } hover:underline transition-colors`}
-                    href={link.href}
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
+            <NavLinks />
           </Flex>
-          <Box>
-            {status === 'authenticated' && (
-              <DropdownMenu.Root>
-                <DropdownMenu.Trigger>
-                  <Avatar
-                    fallback
-                    radius="full"
-                    src={data.user!.image!}
-                    className="cursor-pointer"
-                    referrerPolicy="no-referrer"
-                  />
-                </DropdownMenu.Trigger>
-                <DropdownMenu.Content>
-                  <Text>{data.user!.email}</Text>
-                  <DropdownMenu.Item>
-                    <Link href="/api/auth/signout">Logout</Link>
-                  </DropdownMenu.Item>
-                </DropdownMenu.Content>
-              </DropdownMenu.Root>
-            )}
-            {status === 'unauthenticated' && (
-              <Link href="/api/auth/signin">LogIn</Link>
-            )}
-          </Box>
+          <AuthStatus />
         </Flex>
       </Container>
     </nav>
   );
 };
+
+const NavLinks = () => {
+  const navLinks = [
+    { label: 'Dashboard', href: '/dashboard' },
+    { label: 'Issues', href: '/issues' },
+  ];
+  const currentPath = usePathname();
+  return (
+    <ul className="flex space-x-4">
+      {navLinks.map(link => (
+        <li key={link.label}>
+          <Link
+            className={classnames({
+              'nav-link': true,
+              'text-zinc-900': currentPath === link.href,
+            })}
+            href={link.href}
+          >
+            {link.label}
+          </Link>
+        </li>
+      ))}
+    </ul>
+  );
+};
+
+const AuthStatus = () => {
+  const { status, data: session } = useSession();
+
+  if (status === 'loading') return <Skeleton width="3rem" />;
+  if (status === 'unauthenticated')
+    return (
+      <Link className="nav-link" href="/api/auth/signin">
+        LogIn
+      </Link>
+    );
+  return (
+    <Box>
+      <DropdownMenu.Root>
+        <DropdownMenu.Trigger>
+          <Avatar
+            fallback
+            radius="full"
+            src={session!.user!.image!}
+            className="cursor-pointer"
+            referrerPolicy="no-referrer"
+          />
+        </DropdownMenu.Trigger>
+        <DropdownMenu.Content>
+          <Text>{session!.user!.email}</Text>
+          <DropdownMenu.Item>
+            <Link href="/api/auth/signout" onClick={() => signOut()}>
+              Logout
+            </Link>
+          </DropdownMenu.Item>
+        </DropdownMenu.Content>
+      </DropdownMenu.Root>
+    </Box>
+  );
+};
+
 export default Navbar;
