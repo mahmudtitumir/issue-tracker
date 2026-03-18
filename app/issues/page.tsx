@@ -21,7 +21,15 @@ const issuesPage = async ({ searchParams }: Props) => {
   const status = statuses.includes(resolvedSearchParams.status as Status)
     ? resolvedSearchParams.status
     : undefined;
-  const issues = await prisma.issue.findMany({ where: { status } });
+  const orderBy = columns
+    .map(column => column.value)
+    .includes(resolvedSearchParams.orderBy as keyof Issue)
+    ? { [resolvedSearchParams.orderBy!]: 'asc' }
+    : undefined;
+  const issues = await prisma.issue.findMany({
+    where: { status },
+    orderBy,
+  });
 
   return (
     <Container>
