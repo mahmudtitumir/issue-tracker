@@ -5,9 +5,14 @@ import { Container, Table } from '@radix-ui/themes';
 import IssueAction from './IssueAction';
 import { Status } from '../generated/prisma/enums';
 import { Issue } from '../generated/prisma/client';
+import Pagination from '../components/Pagination';
 
 interface Props {
-  searchParams: Promise<{ status?: Status; orderBy?: keyof Issue }>;
+  searchParams: Promise<{
+    status?: Status;
+    orderBy?: keyof Issue;
+    page: string;
+  }>;
 }
 
 const issuesPage = async ({ searchParams }: Props) => {
@@ -21,15 +26,21 @@ const issuesPage = async ({ searchParams }: Props) => {
   const status = statuses.includes(resolvedSearchParams.status as Status)
     ? resolvedSearchParams.status
     : undefined;
+  const where = { status };
   const orderBy = columns
     .map(column => column.value)
     .includes(resolvedSearchParams.orderBy as keyof Issue)
     ? { [resolvedSearchParams.orderBy!]: 'asc' }
     : undefined;
+  const page = parseInt(resolvedSearchParams.page) || 1;
+  const pageSize = 10;
   const issues = await prisma.issue.findMany({
-    where: { status },
+    where,
     orderBy,
+    skip: (page - 1) * pageSize,
+    take: pageSize,
   });
+  const issueCount = await prisma.issue.count({ where });
 
   return (
     <Container>
@@ -65,6 +76,11 @@ const issuesPage = async ({ searchParams }: Props) => {
           ))}
         </Table.Body>
       </Table.Root>
+      <Pagination
+        itemCount={issueCount}
+        currentPage={page}
+        pageSize={pageSize}
+      />
     </Container>
   );
 };
