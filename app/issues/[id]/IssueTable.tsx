@@ -1,5 +1,6 @@
 import { IssueStatusBadge } from '@/app/components';
 import { Issue, Status } from '@/app/generated/prisma/client';
+import { ChevronUpIcon } from '@radix-ui/react-icons';
 import { Link, Table } from '@radix-ui/themes';
 import NextLink from 'next/link';
 
@@ -28,7 +29,9 @@ const IssueTable = async ({ searchParams, issues }: Props) => {
               >
                 {column.label}
               </NextLink>
-              {searchParams.orderBy === column.value && ' 🔽'}
+              {searchParams.orderBy === column.value && (
+                <ChevronUpIcon className="inline" />
+              )}
             </Table.ColumnHeaderCell>
           ))}
         </Table.Row>
