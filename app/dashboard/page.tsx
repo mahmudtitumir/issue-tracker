@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import prisma from '@/lib/prisma';
 import { Container, Flex, Grid } from '@radix-ui/themes';
 import IssueChart from './IssueChart';
@@ -21,6 +22,11 @@ const Dashboard = async () => {
       </Grid>
     </Container>
   );
+};
+
+export const metadata: Metadata = {
+  title: 'Issue - Dashboard',
+  description: 'Overview of all issues in the system',
 };
 
 export default Dashboard;

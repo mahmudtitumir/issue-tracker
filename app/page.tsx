@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import Pagination from './components/Pagination';
 
 export default async function Home({
@@ -9,7 +10,11 @@ export default async function Home({
   return (
     <div>
       <h1>Welcome to the Issue Tracker</h1>
-      <Pagination itemCount={100} pageSize={10} currentPage={parseInt(page)} />
     </div>
   );
 }
+
+export const metadata: Metadata = {
+  title: 'Issue Tracker',
+  description: 'A simple issue tracking system built with Next.js',
+};

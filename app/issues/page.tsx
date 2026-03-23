@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import prisma from '@/lib/prisma';
 import { Container } from '@radix-ui/themes';
 import Pagination from '../components/Pagination';
@@ -47,6 +48,11 @@ const issuesPage = async ({ searchParams }: Props) => {
       />
     </Container>
   );
+};
+
+export const metadata: Metadata = {
+  title: 'Issue - List',
+  description: 'List of all issues in the system',
 };
 
 export default issuesPage;
