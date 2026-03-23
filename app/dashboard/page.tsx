@@ -2,6 +2,7 @@ import React from 'react';
 import LatestIssues from './LatestIssues';
 import IssueSummary from './IssueSummary';
 import prisma from '@/lib/prisma';
+import IssueChart from './IssueChart';
 
 const Dashboard = async () => {
   const open = await prisma.issue.count({ where: { status: 'OPEN' } });
@@ -9,7 +10,7 @@ const Dashboard = async () => {
     where: { status: 'IN_PROGRESS' },
   });
   const closed = await prisma.issue.count({ where: { status: 'CLOSED' } });
-  return <IssueSummary open={open} inProgress={inProgress} closed={closed} />;
+  return <IssueChart open={open} inProgress={inProgress} closed={closed} />;
 };
 
 export default Dashboard;
