@@ -1,5 +1,5 @@
 -- CreateTable
-CREATE TABLE `Issue` (
+CREATE TABLE IF NOT EXISTS `Issue` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `title` VARCHAR(255) NOT NULL,
     `description` TEXT NOT NULL,
@@ -12,7 +12,7 @@ CREATE TABLE `Issue` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `User` (
+CREATE TABLE IF NOT EXISTS `User` (
     `id` VARCHAR(191) NOT NULL,
     `name` VARCHAR(191) NULL,
     `username` VARCHAR(191) NULL,
@@ -28,7 +28,7 @@ CREATE TABLE `User` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `Account` (
+CREATE TABLE IF NOT EXISTS `Account` (
     `id` VARCHAR(191) NOT NULL,
     `userId` VARCHAR(191) NOT NULL,
     `type` VARCHAR(191) NOT NULL,
@@ -52,7 +52,7 @@ CREATE TABLE `Account` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `Session` (
+CREATE TABLE IF NOT EXISTS `Session` (
     `id` VARCHAR(191) NOT NULL,
     `sessionToken` VARCHAR(191) NOT NULL,
     `userId` VARCHAR(191) NOT NULL,
@@ -66,7 +66,7 @@ CREATE TABLE `Session` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `VerificationToken` (
+CREATE TABLE IF NOT EXISTS `VerificationToken` (
     `identifier` VARCHAR(191) NOT NULL,
     `token` VARCHAR(191) NOT NULL,
     `expires` DATETIME(3) NOT NULL,
@@ -75,7 +75,7 @@ CREATE TABLE `VerificationToken` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `Authenticator` (
+CREATE TABLE IF NOT EXISTS `Authenticator` (
     `credentialID` VARCHAR(191) NOT NULL,
     `userId` VARCHAR(191) NOT NULL,
     `providerAccountId` VARCHAR(191) NOT NULL,
