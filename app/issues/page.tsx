@@ -6,6 +6,7 @@ import { Issue } from '../generated/prisma/client';
 import { Status } from '../generated/prisma/enums';
 import IssueTable, { columnsName, issueQuery } from './[id]/IssueTable';
 import IssueAction from './IssueAction';
+import { Suspense } from 'react';
 
 interface Props {
   searchParams: Promise<issueQuery>;
@@ -41,11 +42,13 @@ const issuesPage = async ({ searchParams }: Props) => {
     <Container>
       <IssueAction />
       <IssueTable searchParams={resolvedSearchParams} issues={issues} />
-      <Pagination
-        itemCount={issueCount}
-        currentPage={page}
-        pageSize={pageSize}
-      />
+      <Suspense fallback={null}>
+        <Pagination
+          itemCount={issueCount}
+          currentPage={page}
+          pageSize={pageSize}
+        />
+      </Suspense>
     </Container>
   );
 };

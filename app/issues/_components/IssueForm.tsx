@@ -14,7 +14,9 @@ import dynamic from 'next/dynamic';
 
 type IssueFormData = z.infer<typeof issueSchema>;
 
-const SimpleMDE = dynamic(() => import('react-simplemde-editor'));
+const SimpleMDE = dynamic(() => import('react-simplemde-editor'), {
+  ssr: false,
+});
 
 const IssueForm = ({ issue }: { issue?: Issue }) => {
   const router = useRouter();
