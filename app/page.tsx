@@ -1,20 +1,20 @@
+import { Container } from '@radix-ui/themes';
 import type { Metadata } from 'next';
-import Pagination from './components/Pagination';
 
-export default async function Home({
-  searchParams,
-}: {
-  searchParams: Promise<{ page: string }>;
-}) {
-  const { page } = await searchParams;
+const Home = async () => {
   return (
-    <div>
-      <h1>Welcome to the Issue Tracker</h1>
-    </div>
+    <Container>
+      <h1 className="text-3xl font-bold mb-4">Welcome to the Issue Tracker</h1>
+      <p className="text-lg text-gray-600">
+        This is a simple issue tracking system built with Next.js. You can
+        create, view, and manage your issues easily.
+      </p>
+    </Container>
   );
-}
+};
 
 export const metadata: Metadata = {
   title: 'Issue Tracker',
   description: 'A simple issue tracking system built with Next.js',
 };
+export default Home;
